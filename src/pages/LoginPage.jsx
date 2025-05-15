@@ -26,14 +26,21 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (password.length > 0 && password.length < 8) {
+    // ตรวจสอบความยาวของรหัสผ่าน
+    if (password && password.length < 8) {
       setPasswordError("ລະຫັດຜ່ານຢ່າງນ້ອຍຕ້ອງມີ 8 ຕົວອັກສອນ");
-      setIsLoginEnabled(false);
     } else {
       setPasswordError("");
-      setIsLoginEnabled(true);
     }
 
+    // ตรวจสอบว่าอีเมลและรหัสผ่านครบ และถูกต้อง
+    if (email && password && password.length >= 8) {
+      setIsLoginEnabled(true);
+    } else {
+      setIsLoginEnabled(false);
+    }
+
+    // ล้าง error ถ้ามี
     if (loginError) {
       setLoginError("");
     }
@@ -60,13 +67,13 @@ export default function LoginPage() {
       container
       justifyContent="center"
       alignItems="center"
-      sx={{ height: "100vh", backgroundColor: "#e0e0e0" }}
+      sx={{ height: "100vh", backgroundColor: "#e0e0e0", px: 2 }}
     >
       <Box
         sx={{
-          width: "100%",
+          width: { xs: "100%", sm: 400 },
           maxWidth: 400,
-          p: 4,
+          p: { xs: 3, sm: 4 },
           backgroundColor: "#2D2CD1",
           color: "#fff",
           borderRadius: 2,
@@ -75,7 +82,12 @@ export default function LoginPage() {
       >
         <Box textAlign="center" mb={3}>
           <LockOutlinedIcon sx={{ fontSize: 40 }} />
-          <Typography variant="h4" fontWeight="bold" mt={1}>
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            mt={1}
+            sx={{ fontSize: { xs: "1.5rem", sm: "2rem" } }}
+          >
             LOGIN
           </Typography>
         </Box>
@@ -88,7 +100,11 @@ export default function LoginPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           InputProps={{
-            style: { fontSize: "1rem", backgroundColor: "#fff", borderRadius: 1 },
+            style: {
+              fontSize: "1rem",
+              backgroundColor: "#fff",
+              borderRadius: 4,
+            },
           }}
           InputLabelProps={{
             style: { fontSize: "1rem" },
@@ -105,7 +121,11 @@ export default function LoginPage() {
           helperText={passwordError || loginError}
           onChange={(e) => setPassword(e.target.value)}
           InputProps={{
-            style: { fontSize: "1rem", backgroundColor: "#fff", borderRadius: 1 },
+            style: {
+              fontSize: "1rem",
+              backgroundColor: "#fff",
+              borderRadius: 4,
+            },
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton onClick={toggleShowPassword} edge="end">
