@@ -26,21 +26,20 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // ตรวจสอบความยาวของรหัสผ่าน
+    
     if (password && password.length < 8) {
       setPasswordError("ລະຫັດຜ່ານຢ່າງນ້ອຍຕ້ອງມີ 8 ຕົວອັກສອນ");
     } else {
       setPasswordError("");
     }
 
-    // ตรวจสอบว่าอีเมลและรหัสผ่านครบ และถูกต้อง
     if (email && password && password.length >= 8) {
       setIsLoginEnabled(true);
     } else {
       setIsLoginEnabled(false);
     }
 
-    // ล้าง error ถ้ามี
+    
     if (loginError) {
       setLoginError("");
     }
