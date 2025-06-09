@@ -22,11 +22,11 @@ export default function LoginPage() {
   const [loginError, setLoginError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isLoginEnabled, setIsLoginEnabled] = useState(true);
+  const [isLoginEnabled, setIsLoginEnabled] = useState(false);
   const navigate = useNavigate();
 
+  // useEffect สำหรับตรวจสอบ password กับ email เพื่อเปิดปุ่ม login และเช็ค password error
   useEffect(() => {
-    
     if (password && password.length < 8) {
       setPasswordError("ລະຫັດຜ່ານຢ່າງນ້ອຍຕ້ອງມີ 8 ຕົວອັກສອນ");
     } else {
@@ -38,12 +38,15 @@ export default function LoginPage() {
     } else {
       setIsLoginEnabled(false);
     }
-
-    
-    if (loginError) {
-      setLoginError("");
-    }
   }, [email, password]);
+
+  // useEffect แยกสำหรับ reset loginError เมื่อ loginError เปลี่ยน (หรือจะเอาไว้แสดง log/debug)
+  useEffect(() => {
+    if (loginError) {
+      // ถ้าต้องการทำอะไรตอน loginError เปลี่ยน สามารถใส่ได้ที่นี่
+      // console.log("Login error changed:", loginError);
+    }
+  }, [loginError]);
 
   const handleLogin = () => {
     setLoading(true);
@@ -108,6 +111,8 @@ export default function LoginPage() {
           InputLabelProps={{
             style: { fontSize: "1rem" },
           }}
+          error={Boolean(loginError)}
+          helperText={loginError}
         />
 
         <TextField
@@ -127,7 +132,7 @@ export default function LoginPage() {
             },
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton onClick={toggleShowPassword} edge="end">
+                <IconButton onClick={toggleShowPassword} edge="end" tabIndex={-1}>
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>

@@ -1,5 +1,4 @@
-// src/pages/IndexPage.jsx
-import React from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Box,
@@ -15,7 +14,27 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import GroupIcon from "@mui/icons-material/Group";
 
+// ✅ import จากโฟลเดอร์เดียวกัน
+import ProductList from "./ProductList";
+import ProductManagement from "./ProductManagement";
+import UserManagement from "./UserManagement";
+
 export default function IndexPage() {
+  const [selectedPage, setSelectedPage] = useState("productList");
+
+  const renderContent = () => {
+    switch (selectedPage) {
+      case "productList":
+        return <ProductList />;
+      case "productManagement":
+        return <ProductManagement />;
+      case "userManagement":
+        return <UserManagement />;
+      default:
+        return <ProductList />;
+    }
+  };
+
   return (
     <Box sx={{ display: "flex", height: "100vh", overflow: "hidden", bgcolor: "#f0f2f5" }}>
       {/* Header */}
@@ -52,19 +71,19 @@ export default function IndexPage() {
           ຜູ້ໃຊ້: Admin
         </Typography>
         <List>
-          <ListItem button>
+          <ListItem button onClick={() => setSelectedPage("productList")}>
             <ListItemIcon>
               <InventoryIcon />
             </ListItemIcon>
             <ListItemText primary="ລາຍການຜະລິດຕະພັນ" />
           </ListItem>
-          <ListItem button>
+          <ListItem button onClick={() => setSelectedPage("productManagement")}>
             <ListItemIcon>
               <EditNoteIcon />
             </ListItemIcon>
             <ListItemText primary="ຈັດການຜະລິດຕະພັນ" />
           </ListItem>
-          <ListItem button>
+          <ListItem button onClick={() => setSelectedPage("userManagement")}>
             <ListItemIcon>
               <GroupIcon />
             </ListItemIcon>
@@ -73,25 +92,20 @@ export default function IndexPage() {
         </List>
       </Box>
 
-      {/* Content */}
+      {/* Main content */}
       <Box
         component="main"
         sx={{
           flexGrow: 1,
           mt: "70px",
-          ml: "200px",
+          ml: "20px",
           p: "10px 20px 10px 10px",
           height: "calc(100vh - 70px)",
           overflowY: "auto",
         }}
       >
-        <Paper elevation={3} sx={{ p: 4, textAlign: "center" }}>
-          <Typography>
-            ຍິນດີຕ້ອນຮັບ 🎉
-          </Typography>
-          <Typography>
-            ທ່ານເຂົ້າສູ່ລະບົບສຳເລັດແລ້ວ ແລະສາມາດເລືອກເມນູດ້ານຂ້າງເພື່ອເຂົ້າໄປຈັດການຂໍ້ມູນຕ່າງໆ.
-          </Typography>
+        <Paper elevation={3} sx={{ p: 4 }}>
+          {renderContent()}
         </Paper>
       </Box>
     </Box>
